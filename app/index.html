@@ -466,7 +466,7 @@ const readTime = () => { const v=$("#f-time").value; const t = v ? new Date(v).g
 
 function needStudent(){ if (!stu()){ addStudent(); return true; } return false; }
 function addStudent(){
-  const nm = el("input",{id:"f-name",placeholder:"Initials or first name only, e.g. J.K.",required:"",maxlength:"40"});
+  const nm = el("input",{id:"f-name",placeholder:"Initials only, e.g. J.K. 3rd",required:"",maxlength:"40"});
   const beh = el("input",{id:"f-beh",placeholder:"e.g. leaving seat, hitting, refusal"});
   const goals = el("textarea",{id:"f-goals",placeholder:"Short names, one per line, e.g. Reads sight words (80%)"});
   const sup = el("input",{id:"f-sup",placeholder:"e.g. break card, first-then board, visual schedule"});
