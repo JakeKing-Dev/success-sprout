@@ -18,6 +18,7 @@
 <body>
 <title>Success Sprout (Beta)</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<script>try{var t=JSON.parse(localStorage.getItem("bridgelog.meta")||"{}").theme||"light";if(t!=="auto")document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme="light";}</script>
 <style>
 /* Layout: phone-first app shell. Student bar on top, one view at a time, quick-log buttons always one tap away. */
 /* Calm, low-glare palette: soft sage ground, muted lavender-blue accent, clay (not alarm red) for incidents. */
@@ -50,7 +51,7 @@ header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-conte
 .brand{display:flex;align-items:baseline;gap:2px 10px;flex-wrap:wrap}
 .brand b{white-space:nowrap}
 .beta{font-size:.62em;font-weight:500;color:var(--muted);margin-left:.35em;letter-spacing:.02em;white-space:nowrap}
-.brand b{font-size:1.45rem;font-weight:600;color:var(--accent)}
+.brand b{font-size:1.45rem;font-weight:600;color:var(--win)}
 .brand span{font-size:.8rem;color:var(--muted)}
 .local{font:500 .72rem var(--mono);color:var(--accent);background:var(--accent-soft);padding:4px 8px;border-radius:999px}
 .studentbar{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
@@ -68,7 +69,7 @@ button.small{padding:6px 10px;font-size:.82rem;min-height:44px}
 .ic,.logo{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .ic{width:30px;height:30px;margin-bottom:6px}
 .ic .dot{fill:currentColor}
-.logo{width:28px;height:28px;color:var(--accent);align-self:center;stroke-width:2}
+.logo{width:28px;height:28px;color:var(--win);align-self:center;stroke-width:2}
 .brand{align-items:center}
 .q-incident{background:var(--incident-soft);color:var(--incident)}
 .q-win{background:var(--win-soft);color:var(--win)}
@@ -1203,6 +1204,10 @@ function vData(){
   const lockSel = el("select",{id:"lockMin","aria-label":"Lock after"}, ...[1,5,15,30].map(m=>el("option",{value:String(m)},`${m} minute${m>1?"s":""} without use`)));
   lockSel.value = String(lockMinutes()); lockSel.addEventListener("change",()=>{ setMeta({lockMinutes:+lockSel.value}); toast("Saved"); });
   v.append(el("div",{class:"stack"},
+    (()=>{ const sel=el("select",{id:"theme-pick"}, el("option",{value:"light"},"Light"), el("option",{value:"dark"},"Dark"), el("option",{value:"auto"},"Match this device"));
+      sel.value=getMeta().theme||"light";
+      sel.onchange=()=>{ setMeta({theme:sel.value}); if (sel.value==="auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme=sel.value; };
+      return el("div",{class:"card stack"}, el("b",{},"Appearance"), el("label",{class:"f"},"Colors", sel)); })(),
     el("div",{class:"card stack"}, el("b",{},"Your data stays here"),
       el("p",{style:"margin:0;color:var(--muted)"},"Success Sprout has no accounts and sends nothing over the internet. Everything is stored in this browser on this device. Back it up regularly and keep the file where your school stores student records."), el("ul",{class:"badges",style:"justify-content:flex-start","aria-label":"About this app"}, ...["No account needed","Stays on this device","Works offline","Designed for accessibility"].map(t=>el("li",{},t))),
       el("p",{style:"margin:0"},`Last backup: ${lastB}`),
