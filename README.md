@@ -1,4 +1,4 @@
-# BridgeLog
+# Success Sprout
 
 A behavior log for special education that works on any device: iPhone, iPad,
 Android, Chromebook or laptop. Built by a paraprofessional.

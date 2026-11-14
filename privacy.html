@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>BridgeLog Privacy Fact Sheet</title>
-<meta name="description" content="How BridgeLog handles student data: no servers, no accounts, nothing sent over the internet. For principals, district IT and data privacy reviewers.">
+<title>Success Sprout (Beta) Privacy Fact Sheet</title>
+<meta name="description" content="How Success Sprout handles student data: no servers, no accounts, nothing sent over the internet. For principals, district IT and data privacy reviewers.">
 <meta name="theme-color" content="#5b6fa8">
 <link rel="icon" href="app/icon-192.png">
 <style>
+.beta{font-size:.62em;font-weight:500;color:var(--muted);margin-left:.35em;letter-spacing:.02em;white-space:nowrap}
 @font-face{font-family:"Lexend";font-weight:300;font-display:swap;src:url("app/fonts/Lexend-Light.woff") format("woff")}
 @font-face{font-family:"Lexend";font-weight:400;font-display:swap;src:url("app/fonts/Lexend-Regular.woff") format("woff")}
 @font-face{font-family:"Lexend";font-weight:500;font-display:swap;src:url("app/fonts/Lexend-Medium.woff") format("woff")}
@@ -49,23 +50,23 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 5px;border-radius
 <body>
 <main>
   <div class="top">
-    <a class="brand" href="./"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 15h19"/><path d="M4 15C6.5 7.5 17.5 7.5 20 15"/><path d="M8.5 15v-4.4M12 15V9.4M15.5 15v-4.4"/><path d="M6 15v5M18 15v5"/></svg>BridgeLog</a>
+    <a class="brand" href="./"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12C12 8.2 9.4 5.5 5 5.5c0 4.2 2.8 6.5 7 6.5z"/><path d="M12 14.5c0-3.3 2.4-5.5 6.5-5.5 0 3.7-2.6 5.5-6.5 5.5z"/></svg>Success Sprout<span class="beta">(Beta)</span></a>
     <div class="actions"><a class="btn" href="privacy.pdf" download>Download PDF</a><button class="btn" type="button" id="printBtn">Print</button></div>
   </div>
 
   <h1>Privacy and security fact sheet</h1>
-  <p class="sub">For principals, district IT and data privacy reviewers · Updated October 2026</p>
+  <p class="sub">For principals, district IT and data privacy reviewers · Updated November 2026</p>
 
-  <div class="short"><b>The short version.</b> BridgeLog has no servers, no accounts and no database. Student records are created and kept only in the web browser on the device a staff member uses. The developer never receives, stores or can see any student information.</div>
+  <div class="short"><b>The short version.</b> Success Sprout has no servers, no accounts and no database. Student records are created and kept only in the web browser on the device a staff member uses. The developer never receives, stores or can see any student information.</div>
 
-  <h2>What BridgeLog stores, and where</h2>
+  <h2>What Success Sprout stores, and where</h2>
   <p>Everything is kept in the browser's local storage on that one device:</p>
   <ul>
     <li>Students, by initials or first name (the app asks for initials), with their target behaviors, short goal names, the supports staff provide and routine steps.</li>
-    <li>Entries staff log: incidents, wins, goal scores and prompt levels, counts and timers, care notes, seizure logs, emergency intervention reports and restorative conversations.</li>
+    <li>Entries staff log: tough moments, wins, goal scores and prompt levels, counts and timers, care notes (including feelings check-ins a student taps on the staff member's device), seizure logs, emergency intervention reports and restorative conversations.</li>
     <li>Settings: auto-lock time, date of the last backup, and the staff member's initials.</li>
   </ul>
-  <p>BridgeLog doesn't ask for the IEP itself. There are no fields for disability category, diagnosis, services, placement or full goal text, only what a para needs to support the student and take data. Supports stay hidden on screen until staff tap Show.</p>
+  <p>Success Sprout doesn't ask for the IEP itself. There are no fields for disability category, diagnosis, services, placement or full goal text, only what a para needs to support the student and take data. Supports stay hidden on screen until staff tap Show.</p>
   <p>Nothing is stored anywhere else unless a staff member chooses to save a file.</p>
 
   <h2>What can leave the device</h2>
@@ -81,11 +82,11 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 5px;border-radius
 
   <h2>Network activity</h2>
   <ul>
-    <li>BridgeLog is a static web page hosted on GitHub Pages. Opening it downloads the app's own code from GitHub. Like any web host, GitHub can see the device's IP address. It never sees student data, which is never sent.</li>
+    <li>Success Sprout is a static web page hosted on GitHub Pages. Opening it downloads the app's own code from GitHub. Like any web host, GitHub can see the device's IP address. It never sees student data, which is never sent.</li>
     <li>After the first visit the app runs offline. A service worker keeps a copy of the app's files, and only its files.</li>
     <li>The page carries a Content Security Policy that blocks connections to any other site, outside scripts and form submissions, and external fonts or images. The browser enforces this.</li>
     <li>There are no analytics, ads, cookies, trackers or third-party code. Fonts are served with the app.</li>
-    <li>The app currently shares its web address (jakeking-dev.github.io) with the developer's other small public pages. Browsers keep stored data per address, so those pages could technically read unencrypted BridgeLog data on the same device. They contain no code that does. Turning on the passcode keeps the logs encrypted regardless, and a separate address for BridgeLog is planned before school licenses begin.</li>
+    <li>The app currently shares its web address (jakeking-dev.github.io) with the developer's other small public pages. Browsers keep stored data per address, so those pages could technically read unencrypted Success Sprout data on the same device. They contain no code that does. Turning on the passcode keeps the logs encrypted regardless, and a separate address for Success Sprout is planned before school licenses begin.</li>
   </ul>
   <p>IT staff can confirm this by opening the browser's developer tools, logging an entry and checking the Network tab.</p>
 
@@ -103,16 +104,16 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 5px;border-radius
     <li>Entries lock at the end of the day they're entered. After that they can't be edited or deleted.</li>
     <li>A mistake can be voided on the same day, with a required reason. Voided entries are kept and marked.</li>
     <li>Later information is added as dated notes, and the original stays as it was.</li>
-    <li>Every entry carries a SHA-256 fingerprint linked to the entry before it. BridgeLog checks the chain each time it opens and names any past record that was changed, deleted or reordered outside the app. Records removed on purpose (archived students) keep their place in the chain with the date and reason.</li>
+    <li>Every entry carries a SHA-256 fingerprint linked to the entry before it. Success Sprout checks the chain each time it opens and names any past record that was changed, deleted or reordered outside the app. Records removed on purpose (archived students) keep their place in the chain with the date and reason.</li>
     <li>Printed goal data summaries and emergency reports carry a code from that chain, so a printout can later be checked against the device's records.</li>
     <li>Record check compares the device against any backup file and lists any record that is missing or was changed after it locked.</li>
   </ul>
 
   <h2>Retention and removal</h2>
-  <p>BridgeLog never deletes records on its own, because the district sets how long they are kept. When it's time, "Archive and remove" saves a spreadsheet and a BridgeLog file for one student, asks staff to confirm the archive is where the school keeps records, then removes only that student from the device. A removal log keeps the date, the number of entries removed and where the archive went.</p>
+  <p>Success Sprout never deletes records on its own, because the district sets how long they are kept. When it's time, "Archive and remove" saves a spreadsheet and a Success Sprout file for one student, asks staff to confirm the archive is where the school keeps records, then removes only that student from the device. A removal log keeps the date, the number of entries removed and where the archive went.</p>
 
   <h2>Student privacy laws</h2>
-  <p><b style="font-weight:500">FERPA.</b> Records staff create in BridgeLog are kept by the school, on school devices. No student information is disclosed to BridgeLog or its developer, because none is ever sent.</p>
+  <p><b style="font-weight:500">FERPA.</b> Records staff create in Success Sprout are kept by the school, on school devices. No student information is disclosed to Success Sprout or its developer, because none is ever sent.</p>
   <p><b style="font-weight:500">California.</b> The developer receives no student information: staff enter records on their own device and they stay there. That means there is nothing for it to sell, use for advertising or build profiles from, which are the concerns addressed by the Student Online Personal Information Protection Act (SOPIPA) and Education Code 49073.1.</p>
   <p>If your district requires a data privacy agreement, such as the California Student Data Privacy Agreement, contact us and we'll complete it. This sheet describes how the software works and isn't legal advice. Your district should make its own determination.</p>
 
@@ -120,9 +121,9 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 5px;border-radius
   <p>The full source is public at <a href="https://github.com/JakeKing-Dev/bridgelog">github.com/JakeKing-Dev/bridgelog</a>, so your IT staff can read exactly what the app does.</p>
 
   <h2>Contact</h2>
-  <p>Jacob King, maker of BridgeLog · <a href="mailto:jacobnotjoking@gmail.com">jacobnotjoking@gmail.com</a></p>
+  <p>Jacob King, maker of Success Sprout · <a href="mailto:jacobnotjoking@gmail.com">jacobnotjoking@gmail.com</a></p>
 
-  <p class="foot">BridgeLog's seizure and emergency features are record-keeping tools. Staff follow each student's seizure action plan, behavior plan and district procedures. The emergency intervention report helps staff record what happened; it doesn't replace the district's own behavioral emergency report form.</p>
+  <p class="foot">Success Sprout's seizure and emergency features are record-keeping tools. Staff follow each student's seizure action plan, behavior plan and district procedures. The emergency intervention report helps staff record what happened; it doesn't replace the district's own behavioral emergency report form.</p>
 </main>
 <script>
 document.getElementById("printBtn").addEventListener("click", () => window.print());
