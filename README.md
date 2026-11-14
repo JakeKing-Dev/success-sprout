@@ -3,7 +3,7 @@
 A behavior log for special education that works on any device: iPhone, iPad,
 Android, Chromebook or laptop. Built by a paraprofessional.
 
-**Live:** https://jakeking-dev.github.io/bridgelog/ · **App:** https://jakeking-dev.github.io/bridgelog/app/
+**Live:** https://jakeking-dev.github.io/success-sprout/ · **App:** https://jakeking-dev.github.io/success-sprout/app/
 
 Log tough moments (with what happened before and after), wins, goal data and
 restorative conversations on one timeline per student. See the month as a
