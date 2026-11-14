@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; manifest-src 'self'; worker-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
-<meta name="description" content="Phone-first behavior log for special education: tough moments, wins, IEP goal data and restorative conversations on one timeline. Nothing leaves your device.">
+<meta name="description" content="Success Sprout, a secure progress journal for special education teams: tough moments, wins, IEP goal data and restorative conversations on one timeline. Nothing leaves your device.">
 <meta name="theme-color" content="#5b6fa8">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="BridgeLog">
+<meta name="apple-mobile-web-app-title" content="Success Sprout">
 <style>@font-face{font-family:"Lexend";font-weight:300;font-style:normal;font-display:swap;src:url("fonts/Lexend-Light.woff") format("woff")}@font-face{font-family:"Lexend";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/Lexend-Regular.woff") format("woff")}@font-face{font-family:"Lexend";font-weight:500;font-style:normal;font-display:swap;src:url("fonts/Lexend-Medium.woff") format("woff")}@font-face{font-family:"Lexend";font-weight:600;font-style:normal;font-display:swap;src:url("fonts/Lexend-SemiBold.woff") format("woff")}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
 <script>if ("serviceWorker" in navigator && location.protocol === "https:") addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
 </head>
 <body>
-<title>BridgeLog</title>
+<title>Success Sprout (Beta)</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Layout: phone-first app shell. Student bar on top, one view at a time, quick-log buttons always one tap away. */
@@ -26,7 +26,7 @@
   --accent:#53669c; --accent-ink:#fbfcf9; --accent-soft:#e6e9f4;
   --incident:#925842; --incident-soft:#f4e6de; --win:#427353; --win-soft:#e3efe4;
   --goal:#436c8e; --goal-soft:#e2ecf3; --restore:#775b96; --restore-soft:#eee7f4;
-  --care:#38716d; --care-soft:#dcefec;
+  --care:#38716d; --care-soft:#dcefec; --star:#9a7319;
   --font:"Lexend",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Lexend",system-ui,sans-serif;
   --r:16px;
@@ -35,19 +35,21 @@
   --bg:#1c2228; --surface:#242b32; --ink:#e3e7e4; --muted:#a3aeac; --line:#353e46;
   --accent:#9fb0e0; --accent-ink:#1c2228; --accent-soft:#2c3446;
   --incident:#e0a48b; --incident-soft:#3d2f2a; --win:#97c9a4; --win-soft:#26362c;
-  --goal:#96bddb; --goal-soft:#26333e; --restore:#c3acdf; --restore-soft:#332c3d; --care:#8fcfc6; --care-soft:#22373a; color-scheme:dark}}
+  --goal:#96bddb; --goal-soft:#26333e; --restore:#c3acdf; --restore-soft:#332c3d; --care:#8fcfc6; --care-soft:#22373a; --star:#e3c06a; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#1c2228; --surface:#242b32; --ink:#e3e7e4; --muted:#a3aeac; --line:#353e46;
   --accent:#9fb0e0; --accent-ink:#1c2228; --accent-soft:#2c3446;
   --incident:#e0a48b; --incident-soft:#3d2f2a; --win:#97c9a4; --win-soft:#26362c;
-  --goal:#96bddb; --goal-soft:#26333e; --restore:#c3acdf; --restore-soft:#332c3d; --care:#8fcfc6; --care-soft:#22373a; color-scheme:dark}
+  --goal:#96bddb; --goal-soft:#26333e; --restore:#c3acdf; --restore-soft:#332c3d; --care:#8fcfc6; --care-soft:#22373a; --star:#e3c06a; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:300 16.5px/1.6 var(--font);letter-spacing:.005em}
 .wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 96px}
 header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
-.brand{display:flex;align-items:baseline;gap:10px}
+.brand{display:flex;align-items:baseline;gap:2px 10px;flex-wrap:wrap}
+.brand b{white-space:nowrap}
+.beta{font-size:.62em;font-weight:500;color:var(--muted);margin-left:.35em;letter-spacing:.02em;white-space:nowrap}
 .brand b{font-size:1.45rem;font-weight:600;color:var(--accent)}
 .brand span{font-size:.8rem;color:var(--muted)}
 .local{font:500 .72rem var(--mono);color:var(--accent);background:var(--accent-soft);padding:4px 8px;border-radius:999px}
@@ -164,6 +166,37 @@ label.f{display:flex;flex-direction:column;gap:5px;font-size:.84rem;font-weight:
 .gbar{height:14px;border-radius:7px;background:var(--goal-soft);overflow:hidden}
 .gbar i{display:block;height:100%;border-radius:7px;background:var(--goal)}
 .gnote{font-size:.8rem;color:var(--muted)}
+.badges{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:460px}
+.badges li{font-size:.75rem;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.gspark{display:block;width:100%;max-width:520px;height:auto;margin-top:6px}
+.kid{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow:auto;text-align:center}
+.kid-big{font-size:clamp(1.6rem,6vw,2.4rem);font-weight:600;color:var(--ink);margin:0;text-wrap:balance}
+.kid-sub{font-size:clamp(1.1rem,4vw,1.4rem);color:var(--muted);margin:0}
+.kid-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;max-width:620px}
+@media (max-width:480px){.kid-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kid-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:22px;border:3px solid transparent;background:var(--ks);color:var(--k);font:600 1.15rem var(--font);cursor:pointer;min-height:44px}
+.kid-tile:focus-visible,.kid-ok:focus-visible,.kid-x:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+.kid-tile:hover{border-color:var(--k)}
+.kid-tile svg,.kid-done svg{width:min(28vw,120px);height:auto}
+.kid-done svg{width:min(45vw,180px)}
+.kid .fc{fill:var(--surface);stroke:var(--k);stroke-width:3}
+.kid .ff{stroke:var(--k);fill:var(--k);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.kid .ff path{fill:none}
+.kid-done{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--k)}
+.kid-ok{font:600 1.2rem var(--font);padding:14px 40px;border-radius:999px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;margin-top:8px}
+.kid-x{position:absolute;top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:1.1rem;cursor:pointer}
+.kid-sprout svg{width:min(42vw,170px);height:auto;fill:none;stroke:var(--kc,var(--win));stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transform-origin:50% 90%;animation:grow 900ms cubic-bezier(.2,.9,.3,1.2) both}
+.kid-row{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:420px}
+.kid-row svg{width:30px;height:30px;fill:none;stroke:var(--kc,var(--win));stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kid-sprout.still svg{animation:none}
+.kid-pick{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:520px}
+.kid-pick button{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:62px;padding:8px 4px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);font:500 .8rem var(--font);cursor:pointer}
+.kid-pick button[aria-pressed="true"]{border-color:var(--kc);background:var(--bg)}
+.kid-pick button:focus-visible{outline:4px solid var(--accent);outline-offset:2px}
+.kid-pick svg{width:34px;height:34px;fill:none;stroke:var(--kc);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@keyframes grow{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.kid-sprout svg{animation:none}}
 @media (max-width:420px){.wk-label{font-size:.64rem}.day-tile{min-height:52px;padding:5px}.counts{font-size:.78rem;gap:3px}.mini{width:13px;height:13px}}
 .empty{text-align:center;color:var(--muted);padding:28px 12px}
 #lock{position:fixed;inset:0;background:var(--bg);z-index:40;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
@@ -196,7 +229,7 @@ dialog h2{margin:0;font-size:1.2rem}
 
 <div class="wrap">
   <header class="top">
-    <div class="brand"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 15h19"/><path d="M4 15C6.5 7.5 17.5 7.5 20 15"/><path d="M8.5 15v-4.4M12 15V9.4M15.5 15v-4.4"/><path d="M6 15v5M18 15v5"/></svg><b>BridgeLog</b><span>behavior, progress and repair, in one timeline</span></div>
+    <div class="brand"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12C12 8.2 9.4 5.5 5 5.5c0 4.2 2.8 6.5 7 6.5z"/><path d="M12 14.5c0-3.3 2.4-5.5 6.5-5.5 0 3.7-2.6 5.5-6.5 5.5z"/></svg><b>Success Sprout<span class="beta">(Beta)</span></b><span>Secure progress journal</span></div>
     <span class="local" title="Nothing is sent anywhere. Back up from the Data tab.">● Saved on this device only</span>
   </header>
 
@@ -209,7 +242,7 @@ dialog h2{margin:0;font-size:1.2rem}
 
   <div id="running"></div>
   <div class="quick" role="group" aria-label="Quick log">
-    <button class="q-incident" data-log="incident"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.4 4.3 4.3 0 0 0 7 18z"/></svg>Incident<small>what happened, before & after</small></button>
+    <button class="q-incident" data-log="incident"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.4 4.3 4.3 0 0 0 7 18z"/></svg>Tough moment<small>what happened, before & after</small></button>
     <button class="q-win" data-log="win"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12C12 8.2 9.4 5.5 5 5.5c0 4.2 2.8 6.5 7 6.5z"/><path d="M12 14.5c0-3.3 2.4-5.5 6.5-5.5 0 3.7-2.6 5.5-6.5 5.5z"/></svg>Win<small>a success worth noting</small></button>
     <button class="q-goal" data-log="goal"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" class="dot"/></svg>Goal data<small>score toward a goal</small></button>
     <button class="q-time" data-log="time"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 2.4"/><path d="M9.5 2.8h5"/><path d="M12 2.8V6"/></svg>Count & time<small>tally, duration, intervals, breaks</small></button>
@@ -238,7 +271,7 @@ dialog h2{margin:0;font-size:1.2rem}
 <div id="lock" hidden>
   <form id="lockForm" class="lockcard" autocomplete="off">
     <svg class="logo" viewBox="0 0 24 24" aria-hidden="true" style="width:44px;height:44px"><path d="M2.5 15h19"/><path d="M4 15C6.5 7.5 17.5 7.5 20 15"/><path d="M8.5 15v-4.4M12 15V9.4M15.5 15v-4.4"/><path d="M6 15v5M18 15v5"/></svg>
-    <h2>BridgeLog is locked</h2>
+    <h2>Success Sprout is locked</h2>
     <p style="margin:0;color:var(--muted)">Enter your passcode to open your logs.</p>
     <label class="f" for="lockPass">Passcode<input id="lockPass" type="password" autocomplete="current-password" required></label>
     <button class="primary" type="submit">Unlock</button>
@@ -368,7 +401,7 @@ function summarize(name, entries, from, to){
   const range = `${new Date(from).toLocaleDateString(undefined,{month:"long",day:"numeric"})} to ${new Date(to-1).toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"})}`;
   parts.push(`Summary for ${name}, ${range} (${days} day${days>1?"s":""}).`);
   if (!cur.length){ parts.push("No entries were logged in this period."); return parts.join("\n\n"); }
-  let s = `${inc.length} behavior incident${inc.length===1?" was":"s were"} logged`;
+  let s = `${inc.length} tough moment${inc.length===1?" was":"s were"} logged`;
   if (pinc.length || prev.length){
     const d = inc.length - pinc.length;
     s += d<0 ? `, down from ${pinc.length} in the previous ${days} days` : d>0 ? `, up from ${pinc.length} in the previous ${days} days` : `, the same as the previous ${days} days`;
@@ -377,7 +410,7 @@ function summarize(name, entries, from, to){
   if (inc.length){
     const a = P.antecedents[0], act = P.activities[0], tm = P.times[0];
     if (a) s += ` The most common situation beforehand was "${a[0].toLowerCase()}" (${a[1]} of ${inc.length}).`;
-    if (act) s += ` Incidents happened most often during ${act[0].toLowerCase()}`+(tm?`, usually ${tm[0].toLowerCase()}`:"")+".";
+    if (act) s += ` Tough moments happened most often during ${act[0].toLowerCase()}`+(tm?`, usually ${tm[0].toLowerCase()}`:"")+".";
     const hi = inc.filter(e=>e.intensity===3).length;
     s += hi ? ` ${hi} ${hi===1?"was":"were"} rated high intensity.` : " None were rated high intensity.";
   }
@@ -399,7 +432,7 @@ function summarize(name, entries, from, to){
   }
   if (P.fnTotal >= 3){
     const f = P.functions[0];
-    parts.push(`Pattern to discuss with the team: in ${pct(f[1],P.fnTotal)}% of incidents with a recorded response, the response was consistent with "${FUNCTIONS[f[0]].toLowerCase()}". This is a pattern in the log, not a completed functional behavior assessment.`);
+    parts.push(`Pattern to discuss with the team: in ${pct(f[1],P.fnTotal)}% of tough moments with a recorded response, the response was consistent with "${FUNCTIONS[f[0]].toLowerCase()}". This is a pattern in the log, not a completed functional behavior assessment.`);
   }
   return parts.join("\n\n");
 }
@@ -451,7 +484,7 @@ function logIncident(){
   const inten = chipGroup("Intensity", ["Low","Moderate","High"]);
   const dur = el("input",{id:"f-dur",type:"number",min:"0",step:"1",inputmode:"numeric",placeholder:"minutes"});
   const notes = el("textarea",{id:"f-notes",placeholder:"Anything else the team should know"});
-  openForm(`Incident · ${s.name}`,[ beh?field("Behavior",beh):null, field(beh?"Or describe it":"Behavior",behTxt),
+  openForm(`Tough moment · ${s.name}`,[ beh?field("Behavior",beh):null, field(beh?"Or describe it":"Behavior",behTxt),
     el("div",{class:"row"}, field("When",timeInput()), field("Activity",act)),
     field("A · What happened right before",ant), field("C · What adults did right after",con),
     el("div",{class:"row"}, field("Intensity",inten), field("How long (minutes)",dur)), field("Notes",notes)], ()=>{
@@ -459,16 +492,98 @@ function logIncident(){
       if (!behavior){ toast("Add the behavior first."); return false; }
       db.entries.push({id:uid(), student:s.id, type:"incident", t:readTime(), behavior, activity:act.value, antecedent:ant.dataset.value||"",
         consequence:con.dataset.value||"", intensity:["Low","Moderate","High"].indexOf(inten.dataset.value)+1, duration:+dur.value||0, notes:notes.value.trim()});
-      toast("Incident logged");
+      toast("Tough moment logged");
   });
 }
 function logWin(){
   if (needStudent()) return; const s=stu();
   const sk = chipGroup("Skill", WIN_SKILLS), what = el("input",{id:"f-what",placeholder:"What went well?"});
-  openForm(`Win · ${s.name}`,[field("Skill shown",sk), field("What happened",what), field("When",timeInput())], ()=>{
+  const cel = el("input",{type:"checkbox",id:"f-cel",style:"width:auto"}); if (getMeta().celebrate) cel.checked = true;
+  openForm(`Win · ${s.name}`,[field("Skill shown",sk), field("What happened",what), field("When",timeInput()),
+    el("label",{style:"display:flex;gap:10px;align-items:center;font-size:.9rem"}, cel, "Show the student a celebration")], ()=>{
     if (!sk.dataset.value && !what.value.trim()){ toast("Pick a skill or describe the win."); return false; }
-    db.entries.push({id:uid(), student:s.id, type:"win", t:readTime(), skill:sk.dataset.value||"", what:what.value.trim()}); toast("Win logged");
+    const skill = sk.dataset.value||"";
+    db.entries.push({id:uid(), student:s.id, type:"win", t:readTime(), skill, what:what.value.trim()}); toast("Win logged");
+    setMeta({celebrate:cel.checked});
+    if (cel.checked) setTimeout(()=>celebrate(s, skill), 60);
   });
+}
+// ---- Student-facing screens: big pictures, few words, nothing to get wrong.
+// Faces are drawn here (no outside images). Each feeling has its own colour from the theme.
+const FEELINGS = [["Happy","win"],["Calm","goal"],["Sad","accent"],["Mad","incident"],["Worried","restore"],["Tired","care"]];
+function face(kind){
+  const eyes = { Happy:'<circle cx="23" cy="27" r="3"/><circle cx="41" cy="27" r="3"/>',
+    Calm:'<path d="M18 28q5-4 10 0M36 28q5-4 10 0" fill="none"/>',
+    Sad:'<circle cx="23" cy="28" r="3"/><circle cx="41" cy="28" r="3"/><path d="M17 21l9 3M47 21l-9 3" fill="none"/>',
+    Mad:'<circle cx="23" cy="29" r="3"/><circle cx="41" cy="29" r="3"/><path d="M16 20l11 5M48 20l-11 5" fill="none"/>',
+    Worried:'<circle cx="23" cy="28" r="3"/><circle cx="41" cy="28" r="3"/><path d="M17 22q5-5 10-1M47 22q-5-5-10-1" fill="none"/>',
+    Tired:'<path d="M18 29h10M36 29h10" fill="none"/>' }[kind];
+  const mouth = { Happy:'M20 38q12 12 24 0', Calm:'M23 40q9 5 18 0', Sad:'M22 46q10-9 20 0', Mad:'M22 45q10-5 20 0',
+    Worried:'M20 44q4-4 8 0t8 0t8 0', Tired:'M28 43a4 3 0 1 0 8 0a4 3 0 1 0-8 0' }[kind];
+  return `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="fc"/><g class="ff">${eyes}<path d="${mouth}" fill="none"/></g></svg>`;
+}
+function studentScreen(label){
+  const prev = document.activeElement;
+  const ov = el("div",{class:"kid",role:"dialog","aria-modal":"true","aria-label":label});
+  const close = () => { ov.remove(); document.removeEventListener("keydown", onKey); if (prev && prev.focus) prev.focus(); };
+  const onKey = e => { if (e.key==="Escape") close(); };
+  document.addEventListener("keydown", onKey);
+  document.body.append(ov);
+  return {ov, close};
+}
+function feelingsBoard(s){
+  const {ov, close} = studentScreen("How are you feeling?");
+  const first = (s.name||"").split(/\s+/)[0];
+  const grid = el("div",{class:"kid-grid"});
+  FEELINGS.forEach(([f,c])=>{
+    const b = el("button",{type:"button",class:"kid-tile",style:`--k:var(--${c});--ks:var(--${c==="accent"?"accent":c}-soft)`,"aria-label":f});
+    b.innerHTML = face(f) + `<span>${esc(f)}</span>`;
+    b.onclick = () => {
+      addEntry({student:s.id, type:"care", t:Date.now(), care:"Feelings check-in", detail:f, detail2:"Student chose"});
+      save(); render();
+      ov.replaceChildren(el("div",{class:"kid-done",style:`--k:var(--${c});--ks:var(--${c==="accent"?"accent":c}-soft)`}));
+      const d = ov.firstChild; d.innerHTML = face(f);
+      d.append(el("p",{class:"kid-big"},"Thank you for telling me."), el("p",{class:"kid-sub"},`You feel ${f.toLowerCase()}.`),
+        el("button",{type:"button",class:"kid-ok",onclick:close},"Done"));
+      d.querySelector(".kid-ok").focus();
+    };
+    grid.append(b);
+  });
+  ov.append(el("button",{type:"button",class:"kid-x",onclick:close,"aria-label":"Close without saving"},"✕"),
+    el("p",{class:"kid-big"}, first ? `How are you feeling, ${first}?` : "How are you feeling?"), grid);
+  grid.querySelector("button").focus();
+}
+// Each student can pick the picture their wins show up as. Simple original drawings, no characters.
+const WIN_SYMBOLS = {
+  sprout:{label:"Sprout", c:"win", d:'<path d="M12 21v-9"/><path d="M12 12C12 8.2 9.4 5.5 5 5.5c0 4.2 2.8 6.5 7 6.5z"/><path d="M12 14.5c0-3.3 2.4-5.5 6.5-5.5 0 3.7-2.6 5.5-6.5 5.5z"/>'},
+  star:{label:"Star", c:"star", d:'<path d="M12 3.2l2.7 5.5 6 .9-4.35 4.2 1 6L12 16.95 6.65 19.8l1-6L3.3 9.6l6-.9z"/>'},
+  car:{label:"Race car", c:"goal", d:'<path d="M4.6 15.8H2.4v-1.6l2.2-1 3.1-.4 2.6-2.3h3.6l2.4 2.2 4.3.7v2.4h-1.7"/><path d="M10 15.8h3.8"/><path d="M19.8 13.6V10.4h2.1"/><circle cx="7.3" cy="15.9" r="2.2"/><circle cx="16.5" cy="15.9" r="2.2"/><path d="M9.6 13.2h7"/>'},
+  planet:{label:"Planet", c:"restore", d:'<circle cx="12" cy="12" r="5.6"/><path d="M6.9 14.4C3.6 16.5 2.4 18.3 3.3 19c1.5 1.2 7.2-1 12.6-4.9s8.4-8 6.9-9.1c-.8-.6-2.9 0-5.7 1.5"/><circle cx="19.5" cy="18.5" r=".6"/><circle cx="4.5" cy="5.5" r=".6"/>'},
+  dino:{label:"Dinosaur", c:"care", d:'<path d="M2.5 17.5c2.5.4 4.2-.6 5.5-2.4"/><path d="M8 15.1c.4-2.6 2.4-4.1 5-4.1h1.2c1.3 0 2.1-.7 2.5-1.9l1-3.2c.3-1 1.1-1.5 2-1.5h.6c.9 0 1.5.8 1.2 1.6l-.4 1"/><path d="M8 15.1c.5 1.6 2.2 2.4 4.6 2.4h1.6c1.6 0 2.8-1 3-2.5l.4-3.6"/><path d="M10 17.4v2.6M15.4 17.4v2.6"/><circle cx="19.6" cy="5.9" r=".35"/>'}};
+const symSVG = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${WIN_SYMBOLS[k].d}</svg>`;
+function celebrate(s, skill, again){
+  const {ov, close} = studentScreen("You did it!");
+  const key = WIN_SYMBOLS[s.winSymbol] ? s.winSymbol : "sprout", sym = WIN_SYMBOLS[key];
+  ov.style.setProperty("--kc", `var(--${sym.c})`);
+  const today = dayKey(Date.now());
+  const n = db.entries.filter(e=>e.student===s.id && e.type==="win" && !e.voided && dayKey(e.t)===today).length;
+  const big = el("div",{class:"kid-sprout"+(again?" still":"")}); big.innerHTML = symSVG(key);
+  const row = el("div",{class:"kid-row","aria-label":`${n} win${n===1?"":"s"} today`});
+  for (let i=0;i<Math.min(n,12);i++){ const x=el("span",{}); x.innerHTML=symSVG(key); row.append(x); }
+  const pick = el("div",{class:"kid-pick",role:"group","aria-label":"Pick your win picture"});
+  Object.entries(WIN_SYMBOLS).forEach(([k,v])=>{
+    const b = el("button",{type:"button","aria-pressed":String(k===key),style:`--kc:var(--${v.c})`,"aria-label":v.label});
+    b.innerHTML = symSVG(k) + `<span>${esc(v.label)}</span>`;
+    b.onclick = () => { if (k===key) return; s.winSymbol = k; save(); close(); celebrate(s, skill, true); };
+    pick.append(b);
+  });
+  ov.append(big, el("p",{class:"kid-big"},"You did it!"),
+    skill ? el("p",{class:"kid-sub"}, skill) : null,
+    row, el("p",{class:"kid-sub"}, `${n} win${n===1?"":"s"} today`),
+    el("button",{type:"button",class:"kid-ok",onclick:close},"Done"),
+    el("p",{class:"kid-sub",style:"font-size:1rem;margin-top:10px"},"Pick your win picture"), pick);
+  ov.onclick = e => { if (e.target===ov) close(); };
+  (again ? pick.querySelector('[aria-pressed="true"]') : ov.querySelector(".kid-ok")).focus();
 }
 // Goal picker: the student's goals plus any typed one. A typed goal can be kept on the student's list.
 function goalPicker(s, id){
@@ -531,7 +646,7 @@ function logRestore(existing){
 
 // ---------------- record chain ----------------
 // Every entry is linked to the one before it by a SHA-256 fingerprint. Editing, deleting or reordering an
-// entry from a past day breaks the links, and BridgeLog says where. Notes, voids, kept/not-kept and
+// entry from a past day breaks the links, and Success Sprout says where. Notes, voids, kept/not-kept and
 // follow-ups are allowed later changes, so they're left out of the fingerprint.
 const CHAIN_SKIP = new Set(["addenda","voided","status","followups","ch","chFrom"]);
 const GENESIS = "0".repeat(64);
@@ -628,7 +743,7 @@ function chart(entries){
   const W=760, H=210, P={l:30,r:34,t:10,b:24}, cw=(W-P.l-P.r)/days;
   const maxC = Math.max(3, ...keys.map(k=>Math.max(inc[k],win[k])));
   const NS="http://www.w3.org/2000/svg", s=document.createElementNS(NS,"svg"); s.setAttribute("viewBox",`0 0 ${W} ${H}`);
-  s.setAttribute("role","img"); s.setAttribute("aria-label","Incidents and wins per day for the last 4 weeks, with goal scores as a line");
+  s.setAttribute("role","img"); s.setAttribute("aria-label","Tough moments and wins per day for the last 4 weeks, with goal scores as a line");
   const mk=(n,a)=>{const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); s.append(e); return e;};
   const y = v => P.t + (H-P.t-P.b)*(1 - v/maxC), yp = v => P.t + (H-P.t-P.b)*(1 - v/100);
   for (let v=0; v<=maxC; v+=Math.ceil(maxC/3)){ mk("line",{x1:P.l,x2:W-P.r,y1:y(v),y2:y(v),stroke:"var(--line)"}); const t=mk("text",{x:P.l-6,y:y(v)+4,"text-anchor":"end","font-size":11,fill:"var(--muted)","font-family":"var(--mono)"}); t.textContent=v; }
@@ -677,6 +792,37 @@ function weekGrid(entries){
   }
   card.append(g); return card;
 }
+// On-screen progress graph for one goal: one dot per day (that day's average), a trend line once there are
+// three or more days, and the goal's target as a dashed line when the goal name includes a percentage.
+function goalSpark(name, list){
+  const days=new Map(); list.forEach(e=>{ const k=dayKey(e.t); if(!days.has(k)) days.set(k,[]); days.get(k).push(e.score); });
+  const pts=[...days].map(([k,v])=>({t:new Date(k+"T12:00").getTime(), v:v.reduce((a,c)=>a+c,0)/v.length}));
+  const tm=name.match(/(\d{1,3})\s*%/), target=tm?Math.min(100,+tm[1]):null;
+  const from=pts[0].t, to=Math.max(pts[pts.length-1].t, from+6*864e5);
+  const W=340, H=120, P={l:30,r:10,t:10,b:20};
+  const x=t=>P.l+(W-P.l-P.r)*(t-from)/(to-from), y=v=>P.t+(H-P.t-P.b)*(1-v/100);
+  const NS="http://www.w3.org/2000/svg", s=document.createElementNS(NS,"svg"); s.setAttribute("viewBox",`0 0 ${W} ${H}`); s.setAttribute("class","gspark");
+  const mk=(n,a,txt)=>{const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); if(txt!=null) e.textContent=txt; s.append(e); return e;};
+  [0,50,100].forEach(v=>{ mk("line",{x1:P.l,x2:W-P.r,y1:y(v),y2:y(v),stroke:"var(--line)"}); mk("text",{x:P.l-5,y:y(v)+4,"text-anchor":"end","font-size":10,fill:"var(--muted)","font-family":"var(--mono)"}, v+"%"); });
+  if (target!=null){ mk("line",{x1:P.l,x2:W-P.r,y1:y(target),y2:y(target),stroke:"var(--win)","stroke-dasharray":"5 4","stroke-width":1.5});
+    mk("text",{x:W-P.r,y:y(target)-4,"text-anchor":"end","font-size":10,fill:"var(--win)","font-family":"var(--mono)"}, `target ${target}%`); }
+  let trendWord="";
+  if (pts.length>=3){
+    const xs=pts.map(p=>p.t/6048e5), ys=pts.map(p=>p.v), mx=xs.reduce((a,b)=>a+b)/xs.length, my=ys.reduce((a,b)=>a+b)/ys.length;
+    const den=xs.reduce((a,v)=>a+(v-mx)**2,0), sl=den? xs.reduce((a,v,i)=>a+(v-mx)*(ys[i]-my),0)/den : 0;
+    const at=t=>Math.max(0,Math.min(100, my+sl*(t/6048e5-mx)));
+    mk("line",{x1:x(from),y1:y(at(from)),x2:x(to),y2:y(at(to)),stroke:"var(--muted)","stroke-dasharray":"2 3","stroke-width":1.5});
+    trendWord = sl>=2 ? `, trending up about ${Math.round(sl)} points a week` : sl<=-2 ? `, trending down about ${Math.round(-sl)} points a week` : ", holding about steady";
+  }
+  if (pts.length>1) mk("polyline",{points:pts.map(p=>`${x(p.t)},${y(p.v)}`).join(" "),fill:"none",stroke:"var(--goal)","stroke-width":2.2,"stroke-linejoin":"round"});
+  pts.forEach(p=>mk("circle",{cx:x(p.t),cy:y(p.v),r:3.2,fill:"var(--goal)"}));
+  const d=t=>new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  mk("text",{x:P.l,y:H-5,"font-size":10,fill:"var(--muted)","font-family":"var(--mono)"}, d(from));
+  mk("text",{x:W-P.r,y:H-5,"text-anchor":"end","font-size":10,fill:"var(--muted)","font-family":"var(--mono)"}, d(pts[pts.length-1].t));
+  s.setAttribute("role","img");
+  s.setAttribute("aria-label", `${name}: ${pts.length} days of scores from ${d(from)} to ${d(pts[pts.length-1].t)}, latest ${Math.round(pts[pts.length-1].v)}%${trendWord}${target!=null?`, target ${target}%`:""}.`);
+  return s;
+}
 function goalGrowth(entries){
   const s = stu(), goals = entries.filter(e=>e.type==="goal");
   const names = [...new Set([...(s?.goals||[]), ...goals.map(g=>g.goal)])];
@@ -689,7 +835,8 @@ function goalGrowth(entries){
     card.append(el("div",{class:"growth"},
       el("div",{class:"lab"}, el("span",{},n), el("b",{},`${last}%`)),
       el("div",{class:"gbar"}, el("i",{style:`width:${Math.max(3,last)}%`})),
-      el("span",{class:"gnote"}, `${word} · ${list.length} data point${list.length===1?"":"s"}`)));
+      el("span",{class:"gnote"}, `${word} · ${list.length} data point${list.length===1?"":"s"}`),
+      list.length>1 ? goalSpark(n, list) : null));
   });
   if (!any) card.append(el("p",{class:"empty",style:"padding:6px"},"Goal scores will show here as they're logged."));
   return card;
@@ -725,12 +872,12 @@ function vTimeline(){
     el("div",{class:"kpi"}, el("b",{},gavg==null?"—":gavg+"%"), el("span",{},"Avg goal score this week")),
     el("div",{class:"kpi"}, el("b",{},String(all.filter(e=>e.type==="restore"&&e.status==="open").length)), el("span",{},"Open agreements"))));
   if (chainState && !chainState.ok) v.append(el("div",{class:"todo",style:"margin-bottom:12px"}, el("b",{},"Some records don't match their fingerprints"),
-    el("span",{}, `${chainState.problems.length} problem${chainState.problems.length===1?"":"s"} found. Records may have been changed outside BridgeLog.`),
+    el("span",{}, `${chainState.problems.length} problem${chainState.problems.length===1?"":"s"} found. Records may have been changed outside Success Sprout.`),
     el("button",{type:"button",class:"small",onclick:()=>{ tab="data"; render(); }},"See details")));
   const due = dueFollowups(all); if (due) v.append(due);
   v.append(weekGrid(all), goalGrowth(all));
   const fl = el("div",{class:"chips",style:"margin-top:14px"});
-  [["all","Everything"],["incident","Incidents"],["win","Wins"],["goal","Goal data"],["measure","Counts & timers"],["care","Care & safety"],["restore","Restorative"]].forEach(([k,l])=>{
+  [["all","Everything"],["incident","Tough moments"],["win","Wins"],["goal","Goal data"],["measure","Counts & timers"],["care","Care & safety"],["restore","Restorative"]].forEach(([k,l])=>{
     fl.append(el("button",{type:"button",class:"chip","aria-pressed":String(filter===k),onclick:()=>{filter=k; vTimeline();}},l)); });
   v.append(fl);
   fl.append(el("button",{type:"button",class:"chip","aria-pressed":String(showVoided),onclick:()=>{showVoided=!showVoided; vTimeline();}},"Show voided"));
@@ -760,7 +907,7 @@ function viewEntry(e){
   if (e.type==="goal"){ add("Goal",e.goal); add("Score",e.score+"%"); add("Detail",goalDetail(e)); (e.steps||[]).forEach((x,i)=>add(`Step ${i+1}: ${x.s}`, x.l?promptName(x.l):"Not scored")); add("Note",e.notes); }
   if (MORE_TYPES[e.type]) MORE_TYPES[e.type].rows(e, add);
   if (e.type==="restore"){ RQ.forEach((q,i)=>add(q,e.answers?.[i])); add("Participants",e.who); add("Agreement",e.agreement); add("Check back on",e.followUp); add("Status",{open:"Open",kept:"Kept",missed:"Not kept"}[e.status]); }
-  const titles = {incident:"Incident",win:"Win",goal:"Goal data",restore:"Restorative conversation",count:"Tally count",duration:"Duration",interval:"Interval recording",care:"Care log",seizure:"Seizure",emergency:"Emergency intervention"};
+  const titles = {incident:"Tough moment",win:"Win",goal:"Goal data",restore:"Restorative conversation",count:"Tally count",duration:"Duration",interval:"Interval recording",care:"Care log",seizure:"Seizure",emergency:"Emergency intervention"};
   const banner = e.voided ? el("div",{class:"confirm"}, `Voided ${new Date(e.voided.t).toLocaleString([], {dateStyle:"medium", timeStyle:"short"})}: ${e.voided.reason}. Kept for the record and left out of patterns and summaries.`)
     : el("p",{class:"note"}, locked ? "This entry is locked because the day it was entered has passed. You can add a dated note below, but the original can't be changed or removed."
                                      : "You can void this entry until the end of today if it was a mistake. After that it locks for good.");
@@ -776,7 +923,7 @@ function viewEntry(e){
     el("div",{class:"actions"},
       (!locked && !e.voided) ? el("button",{type:"button",class:"ghost",onclick:()=>{ voidArea.hidden=false; reason.focus(); }},"Void entry…") : null,
       (!locked && !e.voided && (e.type==="seizure"||e.type==="emergency")) ? el("button",{type:"button",class:"ghost",onclick:()=> e.type==="seizure" ? seizureForm(e) : emergencyForm(e)},"Edit details") : null,
-      e.type==="emergency" ? el("button",{type:"button",class:"ghost",onclick:()=>printOrSave(berHTML(e), `bridgelog-emergency-report-${dayKey(e.t)}.html`)},"Print report") : null,
+      e.type==="emergency" ? el("button",{type:"button",class:"ghost",onclick:()=>printOrSave(berHTML(e), `success-sprout-emergency-report-${dayKey(e.t)}.html`)},"Print report") : null,
       el("button",{type:"button",class:"ghost",onclick:()=>dlg.close()},"Close"),
       el("button",{type:"button",class:"primary",onclick:()=>{ const t=note.value.trim(); if(!t){ toast("Write the note first."); return; }
         (e.addenda ||= []).push({t:Date.now(), text:t, by:getMeta().me||""}); save(); dlg.close(); render(); toast("Note added"); }},"Add note")));
@@ -793,9 +940,9 @@ function barList(title, rows, total){
 function vPatterns(){
   const v=$("#v-patterns"); v.replaceChildren(); if (!stu()){ v.append(emptyState()); return; }
   const P = patterns(mine());
-  v.append(el("p",{class:"note"}, `Based on ${P.n} logged incident${P.n===1?"":"s"}. These are patterns to bring to your team. A behavior's function is confirmed through a functional behavior assessment by a qualified team.`));
+  v.append(el("p",{class:"note"}, `Based on ${P.n} logged tough moment${P.n===1?"":"s"}. These are patterns to bring to your team. A behavior's function is confirmed through a functional behavior assessment by a qualified team.`));
   const grid=el("div",{style:"display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px"});
-  grid.append(barList("What the behavior may be getting the student", P.functions.map(([k,n])=>[FUNCTIONS[k],n]), P.fnTotal),
+  grid.append(barList("What the student may be seeking", P.functions.map(([k,n])=>[FUNCTIONS[k],n]), P.fnTotal),
               barList("What usually happens right before", P.antecedents, P.n),
               barList("During which activity", P.activities, P.n),
               barList("Time of day", P.times, P.n));
@@ -841,7 +988,7 @@ function vSummary(){
       el("p",{style:"margin:0;color:var(--muted)"},"A printable page for these dates: each goal with its data, a chart and a plain-language sentence, plus behavior data and space for your notes. The case manager uses it to write the IEP progress report."),
       el("div",{class:"row"},
         el("button",{type:"button",class:"primary",onclick:()=>{ const r=range(); if(r) printOrSave(progressHTML(stu(), mine(), r[0], r[1]), null); }},"Print"),
-        el("button",{type:"button",onclick:()=>{ const r=range(); if(r) saveFile(`bridgelog-goal-data-${(stu().name.replace(/[^A-Za-z0-9]+/g,"")||"student")}-${from.value}-to-${to.value}.html`, progressHTML(stu(), mine(), r[0], r[1]), "text/html").then(ok=>ok&&toast("Saved. Open it in any browser to add comments and print.")); }},"Save as file"))),
+        el("button",{type:"button",onclick:()=>{ const r=range(); if(r) saveFile(`success-sprout-goal-data-${(stu().name.replace(/[^A-Za-z0-9]+/g,"")||"student")}-${from.value}-to-${to.value}.html`, progressHTML(stu(), mine(), r[0], r[1]), "text/html").then(ok=>ok&&toast("Saved. Open it in any browser to add comments and print.")); }},"Save as file"))),
     el("p",{class:"note",style:"margin-top:10px"},"Read it over before sharing. It describes what was logged, so a gap in logging looks like a gap in behavior."));
   go();
 }
@@ -876,7 +1023,7 @@ function askPasscode(title, onOk){
   (dlg.open||dlg.showModal()); p.focus();
 }
 async function readBackupFile(file){
-  const text = await file.text(); let d; try{ d = JSON.parse(text); }catch(e){ throw new Error("That file isn't a BridgeLog backup."); }
+  const text = await file.text(); let d; try{ d = JSON.parse(text); }catch(e){ throw new Error("That file isn't a Success Sprout backup."); }
   if (d && d.enc){
     return new Promise((resolve,reject)=>{ askPasscode("This file is encrypted", async pass=>{
       let key, out; try{ key = await deriveKey(pass, fromB64(d.salt)); out = await unseal(d, key); }catch(e){ throw new Error("That passcode didn't work for this file."); }
@@ -940,7 +1087,7 @@ function shareStudent(s){
     const payload = {kind:"share", from:getMeta().me||"", sharedAt:Date.now(), students:[s], entries:db.entries.filter(e=>e.student===s.id)};
     const text = JSON.stringify(await seal(payload, key, toB64(salt)));
     const safe = s.name.replace(/[^A-Za-z0-9]+/g,"") || "student";
-    if (await saveFile(`bridgelog-share-${safe}-${dayKey(Date.now())}.json`, text, "application/json")){ dlg.close(); toast("Share file saved. Send it, then give the passcode separately."); }
+    if (await saveFile(`success-sprout-share-${safe}-${dayKey(Date.now())}.json`, text, "application/json")){ dlg.close(); toast("Share file saved. Send it, then give the passcode separately."); }
   };
   (dlg.open||dlg.showModal()); p1.focus();
 }
@@ -948,7 +1095,7 @@ function archiveStudent(s){
   const entries = db.entries.filter(e=>e.student===s.id);
   const got = {csv:false, json:false};
   const status = el("p",{style:"margin:0;color:var(--muted);font-size:.9rem"},"Not saved yet.");
-  const upd = () => { status.textContent = `Spreadsheet: ${got.csv?"saved":"not saved"} · BridgeLog file: ${got.json?"saved":"not saved"}`; };
+  const upd = () => { status.textContent = `Spreadsheet: ${got.csv?"saved":"not saved"} · Success Sprout file: ${got.json?"saved":"not saved"}`; };
   const ack = el("input",{type:"checkbox",id:"arAck",style:"width:auto"});
   const where = el("input",{id:"arWhere",placeholder:"e.g. given to case manager, school records drive"});
   const typed = el("input",{id:"arName",placeholder:s.name,autocomplete:"off"});
@@ -957,19 +1104,19 @@ function archiveStudent(s){
   form.replaceChildren(el("h2",{},`Archive and remove ${s.name}`),
     el("p",{class:"note"},`Your school decides how long behavior records must be kept. Save the archive and put it where your school keeps student records before removing anything. This removes ${entries.length} entr${entries.length===1?"y":"ies"} for ${s.name} from this device only.`),
     el("b",{},"1. Save the archive"),
-    el("p",{class:"note",style:"margin:0"}, "The BridgeLog file is required: it keeps every detail. The spreadsheet is an extra copy that's easier to read." + (cryptoKey ? " The BridgeLog file is encrypted with this device's current passcode, so store the passcode with your school's record of the archive." : "")),
+    el("p",{class:"note",style:"margin:0"}, "The Success Sprout file is required: it keeps every detail. The spreadsheet is an extra copy that's easier to read." + (cryptoKey ? " The Success Sprout file is encrypted with this device's current passcode, so store the passcode with your school's record of the archive." : "")),
     el("div",{class:"row"},
-      el("button",{type:"button",onclick:async()=>{ if (await saveFile(`bridgelog-archive-${safe}-${dayKey(Date.now())}.csv`, toCSV(entries), "text/csv")){ got.csv=true; upd(); } }},"Spreadsheet (CSV)"),
+      el("button",{type:"button",onclick:async()=>{ if (await saveFile(`success-sprout-archive-${safe}-${dayKey(Date.now())}.csv`, toCSV(entries), "text/csv")){ got.csv=true; upd(); } }},"Spreadsheet (CSV)"),
       el("button",{type:"button",onclick:async()=>{ const payload={kind:"archive", archivedAt:Date.now(), students:[s], entries};
         const text = JSON.stringify(cryptoKey ? await seal(payload) : payload);
-        if (await saveFile(`bridgelog-archive-${safe}-${dayKey(Date.now())}.json`, text, "application/json")){ got.json=true; upd(); } }},"BridgeLog file")),
+        if (await saveFile(`success-sprout-archive-${safe}-${dayKey(Date.now())}.json`, text, "application/json")){ got.json=true; upd(); } }},"Success Sprout file")),
     status,
     el("b",{},"2. Confirm where it went"), field("Where the archive is kept", where),
     el("label",{style:"display:flex;gap:10px;align-items:flex-start;font-size:.9rem"}, ack, "The archive is saved where my school keeps student records."),
     el("b",{},"3. Type the student's name to confirm"), typed, msg,
     el("div",{class:"actions"}, el("button",{type:"button",class:"ghost",onclick:()=>dlg.close()},"Cancel"), el("button",{type:"submit",class:"primary"},`Remove ${s.name}`)));
   form.onsubmit = async ev => { ev.preventDefault();
-    if (!got.json){ msg.textContent="Save the BridgeLog file first. It's the complete archive."; return; }
+    if (!got.json){ msg.textContent="Save the Success Sprout file first. It's the complete archive."; return; }
     if (!ack.checked){ msg.textContent="Confirm the archive is where your school keeps student records."; return; }
     if (typed.value.trim()!==s.name){ msg.textContent=`Type ${s.name} exactly to confirm.`; return; }
     chainRemove(db.entries.filter(e=>e.student===s.id), `Archived and removed (${s.name})`); db.students = db.students.filter(x=>x.id!==s.id); db.entries = db.entries.filter(e=>e.student!==s.id);
@@ -998,7 +1145,7 @@ function chainBox(){
     } else {
       kids.push(el("div",{class:"status"}, el("i",{style:"background:var(--incident)"}), `${r.problems.length} problem${r.problems.length===1?"":"s"} found`),
         el("ul",{style:"margin:0;padding-left:18px"}, ...r.problems.slice(0,12).map(pr=>el("li",{},describeProblem(pr)))),
-        el("p",{style:"margin:0;color:var(--muted);font-size:.9rem"},"These records no longer match the fingerprints they were given, which happens if the stored data was edited outside BridgeLog. A backup from before the change has the originals; use the backup check below to compare."));
+        el("p",{style:"margin:0;color:var(--muted);font-size:.9rem"},"These records no longer match the fingerprints they were given, which happens if the stored data was edited outside Success Sprout. A backup from before the change has the originals; use the backup check below to compare."));
     }
     const mm=getMeta(), D=t=>new Date(t).toLocaleDateString(undefined,{dateStyle:"medium"});
     const events=[...(mm.restores||[]).map(x=>({t:x.t, text: x.replaced ? `Replaced with a backup${x.from?` from ${D(x.from)}`:""}: ${x.removed} entr${x.removed===1?"y":"ies"} removed; backup fingerprints ${x.fingerprints}.` : `Merged a backup${x.from?` from ${D(x.from)}`:""}: ${x.added} entr${x.added===1?"y":"ies"} added.`})),
@@ -1018,19 +1165,19 @@ function vData(){
     const a=el("a",{href:URL.createObjectURL(new Blob([text],{type})),download:name}); document.body.append(a); a.click(); a.remove(); toast("Saved"); return true;
   };
   const backup = async () => { const payload = {...db, savedAt:Date.now()}; const text = JSON.stringify(cryptoKey ? await seal(payload) : payload);
-    if (await dl(`bridgelog-backup-${dayKey(Date.now())}.json`, text, "application/json")){ setMeta({lastBackup:Date.now()}); vData(); } };
+    if (await dl(`success-sprout-backup-${dayKey(Date.now())}.json`, text, "application/json")){ setMeta({lastBackup:Date.now()}); vData(); } };
   const csv = () => { const ex=new Set(db.students.filter(x=>x.sample).map(x=>x.id)); return toCSV(db.entries.filter(e=>!ex.has(e.student))); };
   const imp = el("input",{type:"file",accept:"application/json,.json",id:"importFile",style:"display:none"});
   imp.addEventListener("change", async ()=>{ const f=imp.files[0]; imp.value=""; if(!f) return;
     try{ const {data, key, salt} = await readBackupFile(f);
-      if(!Array.isArray(data.students)||!Array.isArray(data.entries)) throw new Error("That file isn't a BridgeLog backup.");
+      if(!Array.isArray(data.students)||!Array.isArray(data.entries)) throw new Error("That file isn't a Success Sprout backup.");
       if (data.kind==="share"||data.kind==="archive") throw new Error("That's a shared or archive file. Use \"Add a shared file\" so it merges in.");
       confirmRestore(data, key, salt); }
     catch(e){ if (e.message!=="cancelled") toast(e.message); } });
   const chk = el("input",{type:"file",accept:"application/json,.json",id:"checkFile",style:"display:none"});
   const out = el("div",{id:"checkOut"});
   chk.addEventListener("change", async ()=>{ const f=chk.files[0]; chk.value=""; if(!f) return;
-    try{ const {data} = await readBackupFile(f); if(!Array.isArray(data.entries)) throw new Error("That file isn't a BridgeLog backup.");
+    try{ const {data} = await readBackupFile(f); if(!Array.isArray(data.entries)) throw new Error("That file isn't a Success Sprout backup.");
       const r = await recordCheck(data); const when = r.at ? new Date(r.at).toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"}) : "that";
       const extras = [r.newSince?`${r.newSince} new entr${r.newSince===1?"y":"ies"} since`:null, r.notesSince?`${r.notesSince} with notes added`:null, r.voidedSince?`${r.voidedSince} voided with a reason`:null, r.changedSameDay?`${r.changedSameDay} edited on the day they were entered`:null].filter(Boolean);
       if (!r.missing.length && !r.changedLocked.length){
@@ -1048,7 +1195,7 @@ function vData(){
   meInput.addEventListener("change",()=>{ setMeta({me:meInput.value.trim()}); toast("Saved"); });
   const shareIn = el("input",{type:"file",accept:"application/json,.json",id:"shareFile",style:"display:none"});
   shareIn.addEventListener("change", async ()=>{ const f=shareIn.files[0]; shareIn.value=""; if(!f) return;
-    try{ const {data} = await readBackupFile(f); if(!Array.isArray(data.students)||!Array.isArray(data.entries)) throw new Error("That file isn't a BridgeLog file.");
+    try{ const {data} = await readBackupFile(f); if(!Array.isArray(data.students)||!Array.isArray(data.entries)) throw new Error("That file isn't a Success Sprout file.");
       const r = mergeIn(data); await save(); render();
       toast(`Added ${r.newEntries} entr${r.newEntries===1?"y":"ies"}${r.newNotes?` and ${r.newNotes} note${r.newNotes===1?"":"s"}`:""}${data.from?` from ${data.from}`:""}.`); }
     catch(e){ if (e.message!=="cancelled") toast(e.message); } });
@@ -1057,22 +1204,22 @@ function vData(){
   lockSel.value = String(lockMinutes()); lockSel.addEventListener("change",()=>{ setMeta({lockMinutes:+lockSel.value}); toast("Saved"); });
   v.append(el("div",{class:"stack"},
     el("div",{class:"card stack"}, el("b",{},"Your data stays here"),
-      el("p",{style:"margin:0;color:var(--muted)"},"BridgeLog has no accounts and sends nothing over the internet. Everything is stored in this browser on this device. Back it up regularly and keep the file where your school stores student records."),
+      el("p",{style:"margin:0;color:var(--muted)"},"Success Sprout has no accounts and sends nothing over the internet. Everything is stored in this browser on this device. Back it up regularly and keep the file where your school stores student records."), el("ul",{class:"badges",style:"justify-content:flex-start","aria-label":"About this app"}, ...["No account needed","Stays on this device","Works offline","Built by a para","Designed for accessibility"].map(t=>el("li",{},t))),
       el("p",{style:"margin:0"},`Last backup: ${lastB}`),
       el("div",{class:"row"},
         el("button",{type:"button",class:"primary",onclick:backup},"Download backup"),
         el("button",{type:"button",onclick:()=>imp.click()},"Restore a backup"),
-        el("button",{type:"button",onclick:()=>{ dl(`bridgelog-${dayKey(Date.now())}.csv`, csv(), "text/csv"); }},"Export to spreadsheet (CSV)")), imp,
+        el("button",{type:"button",onclick:()=>{ dl(`success-sprout-${dayKey(Date.now())}.csv`, csv(), "text/csv"); }},"Export to spreadsheet (CSV)")), imp,
       el("p",{style:"margin:0;font-size:.82rem;color:var(--muted)"}, cryptoKey ? "Backups are encrypted with your passcode. The spreadsheet export is not, so store it carefully." : "The spreadsheet export and backups are readable files. Store them where your school keeps student records.")),
     el("div",{class:"card stack"}, el("b",{},"Passcode protection"),
       el("div",{class:"status"}, el("i",{style:`background:var(${cryptoKey?"--win":"--muted"})`}), cryptoKey ? "On: your logs are encrypted on this device" : "Off"),
-      el("p",{style:"margin:0;color:var(--muted)"}, cryptoKey ? "BridgeLog locks itself when it isn't used for a while. Anyone who picks up this device needs the passcode to read the logs."
+      el("p",{style:"margin:0;color:var(--muted)"}, cryptoKey ? "Success Sprout locks itself when it isn't used for a while. Anyone who picks up this device needs the passcode to read the logs."
         : "Encrypts everything on this device and locks the app when it isn't in use. Useful on shared or school devices."),
       cryptoKey ? el("label",{class:"f"},"Lock after", lockSel) : null,
       el("div",{class:"row"}, cryptoKey ? el("button",{type:"button",onclick:()=>lockNow()},"Lock now") : el("button",{type:"button",class:"primary",onclick:setPasscode},"Turn on passcode"),
         cryptoKey ? el("button",{type:"button",class:"ghost",onclick:removePasscode},"Turn off passcode") : null)),
     el("div",{class:"card stack"}, el("b",{},"Record check"), chainBox(),
-      el("p",{style:"margin:0;color:var(--muted)"},"Choose a backup file and BridgeLog checks that every record in it is still on this device and hasn't been changed since it locked. Notes, voids with a reason and kept-or-not updates are allowed changes and are listed separately."),
+      el("p",{style:"margin:0;color:var(--muted)"},"Choose a backup file and Success Sprout checks that every record in it is still on this device and hasn't been changed since it locked. Notes, voids with a reason and kept-or-not updates are allowed changes and are listed separately."),
       el("div",{class:"row"}, el("button",{type:"button",onclick:()=>chk.click()},"Check records against a backup")), chk, out),
     s? el("div",{class:"card stack"}, el("b",{},`${s.name}'s setup`),
       el("p",{style:"margin:0;color:var(--muted)"},`Target behaviors: ${s.behaviors.join(", ")||"none set"}`),
@@ -1100,7 +1247,7 @@ function vData(){
 async function confirmRestore(data, key, salt){
   const inBackup=new Set(data.entries.map(e=>e.id)), lost=db.entries.filter(e=>!inBackup.has(e.id) && !(db.students.find(x=>x.id===e.student)||{}).sample).length;
   const vc = data.chain ? await verifyChain(data).catch(()=>({ok:false})) : null;
-  const chainNote = !data.entries.length ? "" : !vc ? "This backup has no record fingerprints, so BridgeLog can't confirm it wasn't edited." : vc.ok ? "" : "Some records in this backup don't match their fingerprints, so it may have been edited.";
+  const chainNote = !data.entries.length ? "" : !vc ? "This backup has no record fingerprints, so Success Sprout can't confirm it wasn't edited." : vc.ok ? "" : "Some records in this backup don't match their fingerprints, so it may have been edited.";
   const when = data.savedAt ? new Date(data.savedAt).toLocaleString([], {dateStyle:"medium", timeStyle:"short"}) : "an unknown date";
   const msg=el("p",{role:"status",style:"margin:0;color:var(--incident);min-height:1.2em"});
   form.replaceChildren(el("h2",{},"Restore a backup"),
@@ -1127,7 +1274,7 @@ function setPasscode(){
   const ack = el("input",{type:"checkbox",id:"pcAck",style:"width:auto"});
   const msg = el("p",{role:"status",style:"margin:0;color:var(--incident);min-height:1.2em"});
   form.replaceChildren(el("h2",{},"Turn on passcode protection"),
-    el("p",{class:"note"},"Everything on this device will be encrypted with this passcode. If it's forgotten, the data can't be recovered by anyone, including the people who made BridgeLog. Keep backups."),
+    el("p",{class:"note"},"Everything on this device will be encrypted with this passcode. If it's forgotten, the data can't be recovered by anyone, including the people who made Success Sprout. Keep backups."),
     field("Passcode (6 or more characters)", p1), field("Type it again", p2),
     el("label",{style:"display:flex;gap:10px;align-items:flex-start;font-size:.9rem"}, ack, "I understand a forgotten passcode means the data can't be recovered."), msg,
     el("div",{class:"actions"}, el("button",{type:"button",class:"ghost",onclick:()=>dlg.close()},"Cancel"), el("button",{type:"submit",class:"primary"},"Turn on")));
@@ -1165,7 +1312,7 @@ function askClear(){
   form.replaceChildren(el("h2",{},"Delete everything on this device"),
     el("p",{class:"note"},`This removes every student and all ${n} of your entries from this device. It can't be undone. Your school decides how long records must be kept: archive or back up first.`),
     el("div",{class:"row"}, el("button",{type:"button",onclick:async()=>{ const payload={...db, savedAt:Date.now()}; const text=JSON.stringify(cryptoKey ? await seal(payload) : payload);
-      if (await saveFile(`bridgelog-backup-${dayKey(Date.now())}.json`, text, "application/json")) setMeta({lastBackup:Date.now()}); }},"Download a backup first")),
+      if (await saveFile(`success-sprout-backup-${dayKey(Date.now())}.json`, text, "application/json")) setMeta({lastBackup:Date.now()}); }},"Download a backup first")),
     field("Type DELETE to confirm", typed), msg,
     el("div",{class:"actions"}, el("button",{type:"button",class:"ghost",onclick:()=>dlg.close()},"Cancel"), el("button",{type:"submit",class:"primary"},"Delete everything")));
   form.onsubmit = async e => { e.preventDefault(); if (typed.value.trim().toUpperCase()!=="DELETE"){ msg.textContent="Type DELETE to confirm."; return; }
@@ -1176,7 +1323,8 @@ function askClear(){
 function emptyState(){
   return el("div",{class:"card empty stack",style:"align-items:center"},
     el("b",{style:"font-size:1.1rem;color:var(--ink)"},"Start with a student"),
-    el("p",{style:"margin:0;max-width:44ch"},"Add a student by initials, then log incidents, wins, goal scores and restorative conversations. Or look around with example data first."),
+    el("p",{style:"margin:0;max-width:44ch"},"Add a student by initials, then log tough moments, wins, goal scores and restorative conversations. Or look around with example data first."),
+    el("ul",{class:"badges","aria-label":"About this app"}, ...["No account needed","Stays on this device","Works offline","Built by a para","Designed for accessibility"].map(t=>el("li",{},t))),
     el("div",{class:"row",style:"justify-content:center;max-width:420px"},
       el("button",{type:"button",class:"primary",onclick:addStudent},"Add a student"),
       el("button",{type:"button",onclick:()=>{ addSample(); render(); }},"Show me an example")));
@@ -1228,6 +1376,7 @@ const CARE = {
   "Toileting":      [["Result",["Voided in toilet","BM in toilet","Dry","Wet","BM","Accident"]],["How it started",["Student asked","Scheduled","Staff noticed"]]],
   "Meal / fluids":  [["How much",["All","Most","About half","A little","None"]],["What",["Breakfast","Snack","Lunch","Fluids"]]],
   "Positioning":    [["Position",["Wheelchair","Stander","Mat / floor","Gait trainer","Chair","Side-lying"]]],
+  "Feelings check-in":[["Feeling",["Happy","Calm","Sad","Mad","Worried","Tired"]],["How it started",["Student chose","Staff offered","Scheduled"]]],
   "Regulation break":[["Where",["Calm corner","Sensory room","Walk","Movement break","Quiet space"]],["Started by",["Student asked","Staff offered","Scheduled"]]]};
 const SEIZURE_KINDS = ["Convulsive (stiffening or jerking)","Staring, not responding","One part of the body","Sudden drop or loss of tone","Not sure"];
 const EMERGENCY_INTERVENTIONS = ["Escort","Standing restraint","Seated restraint","Wall-assisted restraint","Floor-assisted restraint","Environmental seclusion","Other"];
@@ -1450,6 +1599,7 @@ function openSupports(){
   sheet(`Supports · ${s.name}`, [el("div",{class:"picker"},
     pickBtn("Trials with prompt levels","Tap the prompt level for each trial",()=>logTrials(s)),
     pickBtn("Skill steps","Task analysis, step by step",()=>logSteps(s)),
+    pickBtn("Feelings check-in","The student taps a picture of how they feel",()=>{ dlg.close(); feelingsBoard(s); }),
     pickBtn("Care log","Toileting, meals, positioning, breaks",()=>logCare(s)),
     pickBtn("Seizure timer","Start timing now",()=>{ dlg.close(); startRun({kind:"seizure",student:s.id,alertMin:s.seizureAlert||5}); }),
     pickBtn("Log a seizure afterwards","Enter the times yourself",()=>seizureForm(null)),
@@ -1667,11 +1817,11 @@ const printCSS = root => PRINT_CSS.replace(/(^|[\s,}])S(?=[\s{.,])/g, (m,a)=>a+r
 function pageHTML(title, body){ return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${printCSS("body")}@media print{body{padding:0}}</style></head><body>${body}</body></html>`; }
 // Inside the Claude viewer printing is blocked, so the page is saved as a file instead; anywhere else it prints directly.
 function printOrSave(html, filename){
-  if (window.claude){ saveFile(filename || "bridgelog-report.html", html, "text/html").then(ok=>ok&&toast("Saved. Open the file to print it.")); return; }
+  if (window.claude){ saveFile(filename || "success-sprout-report.html", html, "text/html").then(ok=>ok&&toast("Saved. Open the file to print it.")); return; }
   const body = html.slice(html.indexOf("<body>")+6, html.lastIndexOf("</body>"));
   const pr=$("#print"); pr.innerHTML = `<style>@media print{${printCSS("#print")}}</style>${body}`;
   addEventListener("afterprint", ()=>pr.replaceChildren(), {once:true});
-  try{ window.print(); }catch(e){ saveFile(filename || "bridgelog-report.html", html, "text/html"); }
+  try{ window.print(); }catch(e){ saveFile(filename || "success-sprout-report.html", html, "text/html"); }
 }
 function goalChart(list, from, to, target){
   const W=700,H=150,P={l:34,r:12,t:10,b:22}, x=t=>P.l+(W-P.l-P.r)*Math.max(0,Math.min(1,(t-from)/(to-from))), y=v=>P.t+(H-P.t-P.b)*(1-v/100);
@@ -1723,18 +1873,18 @@ function progressHTML(s, entries, from, to){
     }
     b+=extra.map(x=>`<p>${esc(x)}</p>`).join("")+`</div>`;
   }
-  b+=`<p class="foot">Prepared from BridgeLog records kept on a school device. Figures reflect what was logged: a day with no entries is a gap in logging, not necessarily in behavior. It contains only logged data, not the IEP itself.</p><p class="foot">Record fingerprint: <b>${chainCode(db.chain&&db.chain.head)}</b>. In BridgeLog, Data tab, enter this code to confirm this page matches the records it came from.</p>`;
+  b+=`<p class="foot">Prepared from Success Sprout records kept on a school device. Figures reflect what was logged: a day with no entries is a gap in logging, not necessarily in behavior. It contains only logged data, not the IEP itself.</p><p class="foot">Record fingerprint: <b>${chainCode(db.chain&&db.chain.head)}</b>. In Success Sprout, Data tab, enter this code to confirm this page matches the records it came from.</p>`;
   return pageHTML(`Goal data summary, ${s.name}`, b);
 }
 function berHTML(e){
   const s=db.students.find(x=>x.id===e.student)||{name:""}, f=e.followups||{};
   const row=(k,v)=>`<tr><td class="k">${esc(k)}</td><td>${esc(v||"")}</td></tr>`;
-  let b=`<h1>Behavioral emergency report</h1><p class="sub">Student: ${esc(s.name)} · recorded in BridgeLog${e.by?` by ${esc(e.by)}`:""}, entered ${esc(fmtDT(e.c||e.t))}</p><table>`;
+  let b=`<h1>Behavioral emergency report</h1><p class="sub">Student: ${esc(s.name)} · recorded in Success Sprout${e.by?` by ${esc(e.by)}`:""}, entered ${esc(fmtDT(e.c||e.t))}</p><table>`;
   BER_FIELDS.forEach(([k,label])=>{ b+=row(label, k==="interventions"?(e.interventions||[]).join(", "):k==="t"?fmtDT(e.t):k==="minutes"?(e.minutes!=null?`${e.minutes} min`:""):e[k]); });
   b+=`</table><h2>Follow-up</h2><table>${row("Forwarded to administrator", f.admin?fmtDT(f.admin.t):"")}${row("Parent or guardian notified", f.parent?fmtDT(f.parent.t):"")}${e.bip==="No"?row("IEP team meeting scheduled", f.iep?fmtDT(f.iep.t):""):""}</table>`;
   if ((e.addenda||[]).length) b+=`<h2>Added notes</h2><table>${e.addenda.map(a=>row(fmtDT(a.t)+(a.by?` · ${a.by}`:""), a.text)).join("")}</table>`;
   b+=`<div class="sig"><div>Staff signature and date</div><div>Administrator signature and date</div></div><div class="sig"><div>Parent or guardian signature and date</div></div>
-  <p class="foot">California Education Code 56521.1 requires a behavioral emergency report to be completed immediately, kept in the student's file and forwarded to a designated administrator, with the parent or guardian notified within one school day. Use your district's official form if it requires one; this page lists what BridgeLog recorded.</p><p class="foot">Record fingerprint: <b>${chainCode(db.chain&&db.chain.head)}</b>. In BridgeLog, Data tab, enter this code to confirm this page matches the records it came from.</p>`;
+  <p class="foot">California Education Code 56521.1 requires a behavioral emergency report to be completed immediately, kept in the student's file and forwarded to a designated administrator, with the parent or guardian notified within one school day. Use your district's official form if it requires one; this page lists what Success Sprout recorded.</p><p class="foot">Record fingerprint: <b>${chainCode(db.chain&&db.chain.head)}</b>. In Success Sprout, Data tab, enter this code to confirm this page matches the records it came from.</p>`;
   return pageHTML(`Behavioral emergency report, ${s.name}`, b);
 }
 
