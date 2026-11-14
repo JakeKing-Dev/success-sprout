@@ -1204,7 +1204,7 @@ function vData(){
   lockSel.value = String(lockMinutes()); lockSel.addEventListener("change",()=>{ setMeta({lockMinutes:+lockSel.value}); toast("Saved"); });
   v.append(el("div",{class:"stack"},
     el("div",{class:"card stack"}, el("b",{},"Your data stays here"),
-      el("p",{style:"margin:0;color:var(--muted)"},"Success Sprout has no accounts and sends nothing over the internet. Everything is stored in this browser on this device. Back it up regularly and keep the file where your school stores student records."), el("ul",{class:"badges",style:"justify-content:flex-start","aria-label":"About this app"}, ...["No account needed","Stays on this device","Works offline","Built by a para","Designed for accessibility"].map(t=>el("li",{},t))),
+      el("p",{style:"margin:0;color:var(--muted)"},"Success Sprout has no accounts and sends nothing over the internet. Everything is stored in this browser on this device. Back it up regularly and keep the file where your school stores student records."), el("ul",{class:"badges",style:"justify-content:flex-start","aria-label":"About this app"}, ...["No account needed","Stays on this device","Works offline","Designed for accessibility"].map(t=>el("li",{},t))),
       el("p",{style:"margin:0"},`Last backup: ${lastB}`),
       el("div",{class:"row"},
         el("button",{type:"button",class:"primary",onclick:backup},"Download backup"),
@@ -1324,7 +1324,7 @@ function emptyState(){
   return el("div",{class:"card empty stack",style:"align-items:center"},
     el("b",{style:"font-size:1.1rem;color:var(--ink)"},"Start with a student"),
     el("p",{style:"margin:0;max-width:44ch"},"Add a student by initials, then log tough moments, wins, goal scores and restorative conversations. Or look around with example data first."),
-    el("ul",{class:"badges","aria-label":"About this app"}, ...["No account needed","Stays on this device","Works offline","Built by a para","Designed for accessibility"].map(t=>el("li",{},t))),
+    el("ul",{class:"badges","aria-label":"About this app"}, ...["No account needed","Stays on this device","Works offline","Designed for accessibility"].map(t=>el("li",{},t))),
     el("div",{class:"row",style:"justify-content:center;max-width:420px"},
       el("button",{type:"button",class:"primary",onclick:addStudent},"Add a student"),
       el("button",{type:"button",onclick:()=>{ addSample(); render(); }},"Show me an example")));
