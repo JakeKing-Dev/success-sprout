@@ -20,6 +20,6 @@ summary for parent calls and IEP meetings.
 
 It's a single HTML file with no build step: open `app/index.html` in a browser.
 
-Pilot and licensing: jacobnotjoking@gmail.com
+Feedback: jacobnotjoking@gmail.com
 
 Made by Jacob King.
