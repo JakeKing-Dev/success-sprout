@@ -851,6 +851,10 @@ function vTimeline(){
     "On iPhone or iPad, tap Share, then Add to Home Screen. Safari can clear saved data from websites you haven't opened in a while; home screen apps keep theirs.",
     el("button",{type:"button",class:"small",onclick:()=>{ setMeta({iosTipDone:true}); vTimeline(); }},"Got it")));
   const real = db.students.some(x=>!x.sample) && db.entries.some(e=>{ const st=db.students.find(x=>x.id===e.student); return st && !st.sample; });
+  const sentAt = (getMeta().lastSent||{})[stu().id], sentAgo = sentAt ? Math.floor((Date.now()-sentAt)/864e5) : null;
+  if (sentAt && sentAgo>=7 && db.entries.some(e=>e.student===stu().id && (e.c||e.t)>sentAt)) v.append(el("div",{class:"note",style:"margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between"},
+    `It's been ${sentAgo} days since you sent ${stu().name}'s log to the teacher, and there are new entries.`,
+    el("button",{type:"button",class:"small",onclick:()=>shareStudent(stu())},"Send now")));
   const lb = getMeta().lastBackup, ago = lb ? Math.floor((Date.now()-lb)/864e5) : null;
   if (real && (lb==null || ago>=7)) v.append(el("div",{class:"note",style:"margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between"},
     lb==null ? "You haven't backed up yet. If this browser's data is ever cleared, the logs go with it." : `Last backup was ${ago} days ago.`,
@@ -1073,11 +1077,11 @@ function mergeIn(data){
 function shareStudent(s){
   const p1=el("input",{type:"password",id:"sh1",autocomplete:"new-password"}), p2=el("input",{type:"password",id:"sh2",autocomplete:"new-password"});
   const msg=el("p",{role:"status",style:"margin:0;color:var(--incident);min-height:1.2em"});
-  form.replaceChildren(el("h2",{},`Share ${s.name}'s log`),
-    el("p",{class:"note"},"This makes an encrypted file with this student's entries. Send it the way your school sends student records, like school email or a school drive. Tell your teammate the share passcode in person or by phone, never in the same message as the file."),
+  form.replaceChildren(el("h2",{},`Send ${s.name}'s log to the teacher`),
+    el("p",{class:"note"},"This makes an encrypted file with this student's entries, for the lead teacher or another teammate. Send it the way your school sends student records, like school email or a school drive. Tell them the share passcode in person or by phone, never in the same message as the file. When they add it, it merges into their log and only new entries are added."),
     field("Share passcode (6 or more characters)",p1), field("Type it again",p2), msg,
     el("div",{class:"actions"}, el("button",{type:"button",class:"ghost",onclick:()=>dlg.close()},"Cancel"), el("button",{type:"submit",class:"primary"},"Make the file")));
-  if (!getMeta().me){ const mi=el("input",{id:"shMe",maxlength:"12",placeholder:"e.g. J.K."}); form.insertBefore(field("Your initials (so your teammate sees who logged these)",mi), msg); mi.addEventListener("change",()=>setMeta({me:mi.value.trim()})); }
+  if (!getMeta().me){ const mi=el("input",{id:"shMe",maxlength:"12",placeholder:"e.g. J.K."}); form.insertBefore(field("Your initials (so the teacher sees who logged these)",mi), msg); mi.addEventListener("change",()=>setMeta({me:mi.value.trim()})); }
   form.onsubmit = async ev => { ev.preventDefault();
     if (!getMeta().me){ msg.textContent="Add your initials first."; return; }
     if (p1.value.length<6){ msg.textContent="Use at least 6 characters."; return; }
@@ -1088,7 +1092,22 @@ function shareStudent(s){
     const payload = {kind:"share", from:getMeta().me||"", sharedAt:Date.now(), students:[s], entries:db.entries.filter(e=>e.student===s.id)};
     const text = JSON.stringify(await seal(payload, key, toB64(salt)));
     const safe = s.name.replace(/[^A-Za-z0-9]+/g,"") || "student";
-    if (await saveFile(`success-sprout-share-${safe}-${dayKey(Date.now())}.json`, text, "application/json")){ dlg.close(); toast("Share file saved. Send it, then give the passcode separately."); }
+    const name = `success-sprout-${safe}-${dayKey(Date.now())}.json`;
+    const sent = () => { const m=getMeta().lastSent||{}; m[s.id]=Date.now(); setMeta({lastSent:m}); render(); };
+    let file=null; try{ file = new File([text], name, {type:"application/json"}); }catch(e){}
+    const canShare = !!(file && navigator.canShare && navigator.canShare({files:[file]}));
+    const done = el("p",{role:"status",style:"margin:0;color:var(--muted);min-height:1.2em"});
+    form.replaceChildren(el("h2",{},"The file is ready"),
+      el("p",{class:"note"}, canShare ? "Tap Send to pick school email, a school drive or another app. Then tell the teacher the passcode in person or by phone."
+                                       : "Save the file, then send it by school email or a school drive. Tell the teacher the passcode in person or by phone."),
+      done,
+      el("div",{class:"actions"}, el("button",{type:"button",class:"ghost",onclick:()=>dlg.close()},"Done"),
+        canShare ? el("button",{type:"button",class:"ghost",onclick:async()=>{ if (await saveFile(name, text, "application/json")){ sent(); done.textContent="Saved. Send it, then give the passcode separately."; } }},"Save instead") : null,
+        el("button",{type:"button",class:"primary",onclick:async()=>{
+          if (canShare){ try{ await navigator.share({files:[file], title:`Success Sprout: ${s.name}`}); sent(); done.textContent="Sent. Give the passcode separately."; }
+                         catch(e){ if (e && e.name!=="AbortError") done.textContent="Couldn't open sharing here. Tap Save instead."; } }
+          else if (await saveFile(name, text, "application/json")){ sent(); done.textContent="Saved. Send it, then give the passcode separately."; }
+        }}, canShare ? "Send" : "Save the file")));
   };
   (dlg.open||dlg.showModal()); p1.focus();
 }
@@ -1230,10 +1249,10 @@ function vData(){
       el("p",{style:"margin:0;color:var(--muted)"},`Target behaviors: ${s.behaviors.join(", ")||"none set"}`),
       el("p",{style:"margin:0;color:var(--muted)"},`Goals: ${s.goals.join("; ")||"none set"}`),
       el("div",{class:"row"}, el("button",{type:"button",onclick:editStudent},"Edit behaviors and goals"),
-        el("button",{type:"button",onclick:()=>shareStudent(s)},"Share with a teammate"),
+        el("button",{type:"button",class:"primary",onclick:()=>shareStudent(s)},"Send to teacher"),
         el("button",{type:"button",class:"ghost",onclick:()=>archiveStudent(s)},"Archive and remove"))) : null,
     el("div",{class:"card stack"}, el("b",{},"Working as a team"),
-      el("p",{style:"margin:0;color:var(--muted)"},"Share a student's log with your teacher or case manager as an encrypted file, sent the way your school already sends student records. Adding a shared file merges it in: nothing already here is replaced, and each entry shows who logged it."),
+      el("p",{style:"margin:0;color:var(--muted)"},"Use \"Send to teacher\" on a student to send their log to the lead teacher or case manager as an encrypted file, the way your school already sends student records. When the teacher adds it, it merges in: nothing already there is replaced, only new entries are added, and each entry shows who logged it. Nothing syncs on its own, so send it regularly."),
       el("label",{class:"f"},"Your initials (shown on entries you share)", meInput),
       el("div",{class:"row"}, el("button",{type:"button",onclick:()=>shareIn.click()},"Add a shared file")), shareIn),
     (db.removalLog||[]).length ? el("div",{class:"card stack"}, el("b",{},"Removal log"),
